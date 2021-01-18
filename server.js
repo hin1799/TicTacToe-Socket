@@ -10,6 +10,9 @@ const WIN_STATES = [
   [0, 4, 8],
   [2, 4, 6]
 ]
+//random names for the players
+var names=["Storm","Iron man","Hulk","Tornado","Captain","Eagle eye","Exodus","Mastermind",
+"Hurricane","Apex","Iris","Venus","Topaz","Alexander","Deadpool"];
 
 const http = require('http').createServer().listen(8000, console.log('listening on port 8000'));
 const server = require('websocket').server;
@@ -19,12 +22,14 @@ const socket = new server({
 socket.on('request', (req) => {
   const conn = req.accept(null, req.origin);
   const clientId = Math.round(Math.random() * 100) + Math.round(Math.random() * 100) + Math.round(Math.random() * 100);
+  const uname=names[Math.floor(Math.random()*names.length)]
   clients[clientId] = {
     'conn': conn
   }
   conn.send(JSON.stringify({
     'tag': 'connected',
-    'clientId': clientId
+    'clientId': clientId,
+    'uname': uname
   }))
   sendAvailGames();
   conn.on('message', onMessage)
@@ -93,7 +98,7 @@ function onMessage(msg) {
         games[data.gameId].players.forEach(player => {
           clients[player.clientId].conn.send(JSON.stringify({
             'tag': 'winner',
-            'winner': player.symbol
+            'winner': playerWinner
           }))
         })
       } else if (isDraw) {
@@ -123,13 +128,15 @@ function updateBoard(gameId) {
     }))
   })
 }
-
+var playerWinner;
 function winState(gameId) {
   return WIN_STATES.some(row => {
     return (row.every(cell => {
+        playerWinner='X'
         return games[gameId].board[cell] == 'X'
       }) ||
       row.every(cell => {
+        playerWinner='O'
         return games[gameId].board[cell] == 'O'
       })
     )

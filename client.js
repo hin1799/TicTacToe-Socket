@@ -29,9 +29,10 @@ function onMessage(msg) {
   switch (data.tag) {
     case 'connected':
       console.log(data.clientId)
+      console.log(data.uname)
       clientId = data.clientId;
       const lbl = document.createElement('label');
-      lbl.innerText = data.clientId;
+      lbl.innerText = "Hello, "+data.uname;
       lbl.style.textAlign='center';
       sidebar.insertBefore(lbl,connect)
       create.disabled = false;
@@ -90,7 +91,8 @@ function onMessage(msg) {
       alert('The winner is '+ data.winner)
       break
     case 'gameDraw':
-      aler('The game is a Draw!')
+      alert('The game is Draw!')
+      break
   }
 }
 
