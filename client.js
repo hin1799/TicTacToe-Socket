@@ -18,6 +18,7 @@ const board=document.querySelector('.board')
 const list = document.querySelector('ul');
 const sidebar = document.querySelector('.sidebar');
 const connect = document.querySelector(".connectbtn");
+const heading=document.querySelector("h1");
 connect.addEventListener('click', (src) => {
   socket = new WebSocket('ws://localhost:8000');
   socket.onmessage = onMessage
@@ -30,8 +31,8 @@ function onMessage(msg) {
     case 'connected':
       console.log(data.clientId)
       console.log(data.uname)
-      clientId = data.clientId;
-      const lbl = document.createElement('label');
+      clientId = data.clientId
+      const lbl = document.createElement('h3');
       lbl.innerText = "Hello, "+data.uname;
       lbl.style.textAlign='center';
       sidebar.insertBefore(lbl,connect)
@@ -47,6 +48,7 @@ function onMessage(msg) {
         const li = document.createElement('li')
         li.innerText = game
         li.style.textAlign = 'center'
+        li.classList.add('game')
         list.appendChild(li)
         li.addEventListener('click', () => {
           gameId = game
