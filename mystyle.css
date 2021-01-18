@@ -33,16 +33,18 @@ h1{
   display: flex;
   flex-flow:column;
   justify-content: center;
-
 }
+
 .mainbar{
   background-color: #7FB6CD;
 }
 button,
-label{
+label,
+.game{
   background-color: #97B4C0;
   margin-top:4px;
 }
+
 ul{
   list-style: none;
 }
